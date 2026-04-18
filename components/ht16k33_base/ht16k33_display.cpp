@@ -19,29 +19,24 @@ void HT16K33BaseDisplay::setup() {
     display->write_bytes(DISPLAY_COMMAND_DISPLAY_ON, nullptr, 0);
   }
   this->set_brightness(1);
-  memset(this->buffer_, 0, 64);
 }
 
 void HT16K33BaseDisplay::loop() {
   unsigned long now = millis();
   int numc = this->displays_.size() * 8;
-  // check if the buffer has shrunk past the current position since last update
-  if (this->offset_ + numc > this->buffer_fill_) {
-    this->offset_ = std::max(this->buffer_fill_ - numc, 0);
-    this->display_();
-  }
-  if (!this->scroll_ || (this->buffer_fill_ <= numc))
+  int len = this->buffer_.size();
+  if (!this->scroll_ || (len <= numc))
     return;
   if ((this->offset_ == 0) && (now - this->last_scroll_ < this->scroll_delay_))
     return;
-  if (this->offset_ + numc >= this->buffer_fill_) {
-    if (now - this->last_scroll_ >= this->scroll_dwell_) {
+  if ((!this->continuous_ && (this->offset_ + numc >= len)) ||
+      (this->continuous_ && (this->offset_ > len - 2))) {
+    if (this->continuous_ || (now - this->last_scroll_ >= this->scroll_dwell_)) {
       this->offset_ = 0;
       this->last_scroll_ = now;
       this->display_();
     }
-  } else
-  if (now - this->last_scroll_ >= this->scroll_speed_) {
+  } else if (now - this->last_scroll_ >= this->scroll_speed_) {
     this->offset_ += 2;
     this->last_scroll_ = now;
     this->display_();
@@ -51,11 +46,12 @@ void HT16K33BaseDisplay::loop() {
 float HT16K33BaseDisplay::get_setup_priority() const { return setup_priority::PROCESSOR; }
 
 void HT16K33BaseDisplay::update() {
-  memset(this->buffer_, 0, 64);
-  int prev_fill = this->buffer_fill_;
-  this->buffer_fill_ = 0;
+  int prev_fill = this->buffer_.size();
+  this->buffer_.clear();
   this->call_writer();
-  if (this->scroll_ && (prev_fill != this->buffer_fill_)) {
+  int numc = this->displays_.size() * 8;
+  int len = this->buffer_.size();
+  if ((this->scroll_ && (prev_fill != len) && !this->continuous_) || (len <= numc)) {
     this->last_scroll_ = millis();
     this->offset_ = 0;
   }
@@ -84,16 +80,10 @@ float HT16K33BaseDisplay::get_brightness() {
 }
 
 void HT16K33BaseDisplay::print(const char *str) {
-  uint8_t pos = this->buffer_fill_;
   uint8_t idx = 1;
   uint16_t fontc = 0;
   this->show_colon_ = false;
   while (*str != '\0') {
-    if (pos >= 64) {
-      ESP_LOGW(TAG, "output buffer full!");
-      break;
-    }
-
     uint8_t c = *reinterpret_cast<const uint8_t *>(str++);
     if (c > 127)
       fontc = 0;
@@ -110,11 +100,10 @@ void HT16K33BaseDisplay::print(const char *str) {
       str++;
       idx++;
     }
-    this->buffer_[pos++] = fontc & 0xff;
-    this->buffer_[pos++] = fontc >> 8;
+    this->buffer_.push_back(fontc & 0xff);
+    this->buffer_.push_back(fontc >> 8);
     idx++;
   }
-  this->buffer_fill_ = pos;
 }
 
 void HT16K33BaseDisplay::print(const std::string &str) { this->print(str.c_str()); }
