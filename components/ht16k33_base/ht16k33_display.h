@@ -56,7 +56,7 @@ class HT16K33BaseDisplay : public PollingComponent, public i2c::I2CDevice {
   virtual void display_() = 0;
   virtual uint16_t read_character_(uint8_t c) const = 0;
   virtual uint16_t decimal_point_mask_() const = 0;
-  virtual bool supports_colon_() const =0;
+  virtual bool supports_colon_() const = 0;
 
   std::vector<i2c::I2CDevice *> displays_ {this};
   std::function<void(HT16K33BaseDisplay &)> writer_;

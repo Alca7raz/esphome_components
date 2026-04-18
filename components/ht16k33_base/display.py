@@ -1,6 +1,6 @@
 import esphome.codegen as cg
-import esphome.config_validation as cv
 from esphome.components import display, i2c
+import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_LAMBDA
 from esphome.const import __version__ as ESPHOME_VERSION
 
@@ -21,7 +21,7 @@ CONFIG_SECONDARY = cv.Schema({
     cv.GenerateID(): cv.declare_id(i2c.I2CDevice)
 }).extend(i2c.i2c_device_schema(None))
 
-CONFIG_SCHEMA = display.BASIC_DISPLAY_SCHEMA.extend({
+CONFIG_SCHEMA_BASE = display.BASIC_DISPLAY_SCHEMA.extend({
     cv.GenerateID(): cv.declare_id(HT16K33BaseDisplay),
     cv.Optional(CONF_CONTINUOUS, default=False): cv.boolean,
     cv.Optional(CONF_SCROLL, default=False): cv.boolean,
@@ -32,8 +32,6 @@ CONFIG_SCHEMA = display.BASIC_DISPLAY_SCHEMA.extend({
 }).extend(cv.polling_component_schema('1s')).extend(i2c.i2c_device_schema(0x70))
 
 async def base_to_code(var, config):
-    if cv.Version.parse(ESPHOME_VERSION) < cv.Version.parse("2023.12.0"):
-        await cg.register_component(var, config)
     await display.register_display(var, config)
     await i2c.register_i2c_device(var, config)
 
