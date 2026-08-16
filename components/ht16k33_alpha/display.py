@@ -14,7 +14,7 @@ AUTO_LOAD = ['ht16k33_base']
 HT16K33AlphaDisplay = ht16k33_ns.class_("HT16K33AlphaDisplay", HT16K33BaseDisplay)
 
 CONFIG_SCHEMA = CONFIG_SCHEMA_BASE.extend(
-    cv.Schema({cv.GenerateID(): cv.declare_id(HT16K337SegmentDisplay)})
+    cv.Schema({cv.GenerateID(): cv.declare_id(HT16K33AlphaDisplay)})
 )
 
 async def to_code(config):
