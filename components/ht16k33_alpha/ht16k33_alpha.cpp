@@ -13,7 +13,7 @@ namespace ht16k33 {
 static const char *TAG = "ht16k33";
 
 void HT16K33AlphaDisplay::display_() {
-  int numc = this->displays_.size() * 16;
+  int numc = this->displays_.size() * this->size_ * 2;
   int len = this->buffer_.size();
   uint8_t data[numc];
   memset(data, 0, numc);
@@ -28,7 +28,7 @@ void HT16K33AlphaDisplay::display_() {
   }
   pos = 0;
   for (auto *display : this->displays_) {
-    display->write_bytes(DISPLAY_COMMAND_SET_DDRAM_ADDR, data + pos, 16);
+    display->write_bytes(DISPLAY_COMMAND_SET_DDRAM_ADDR, data + pos, this->size_ * 2);
     offset += 8;
   }
 }
