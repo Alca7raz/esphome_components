@@ -7,7 +7,7 @@ from ..ht16k33_base.display import (
     ht16k33_ns,
     HT16K33BaseDisplay,
 )
-import esphome-config_validation as cv
+import esphome.config_validation as cv
 
 AUTO_LOAD = ['ht16k33_base']
 CONF_SIZE = "size"
