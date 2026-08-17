@@ -5,7 +5,7 @@ This component supports the 4 character 14 segment alphanumeric display.
 > :warning: If using this component as an external component, you need to include both `ht16k33_alpha` **and** `ht16k33_base` components.
 ```yaml
 external_components:
-  source: github://ssieb/custom_components/
+  source: github://Alca7raz/custom_components/
   components: [ ht16k33_base, ht16k33_alpha ]
 ```
 
@@ -29,6 +29,7 @@ display:
     scroll_speed: 250ms
     scroll_dwell: 2s
     scroll_delay: 3
+    size: 4
     lambda: |-
       it.print("ABCD");
     secondary_displays:
@@ -47,4 +48,6 @@ display:
 `scroll_delay:` is the number (float, minimum 1) of `scroll_speed` cycles to wait at the beginning before starting to scroll, default 3
 
 `secondary_display:` is a list of i2c devices where `address:` is required and `i2c_id:` is optional unless there is more than one i2c bus.
+
+`size:` number of characters in module, default is 4.
 
