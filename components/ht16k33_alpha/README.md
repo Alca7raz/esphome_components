@@ -5,7 +5,7 @@ This component supports the 4 character 14 segment alphanumeric display.
 > :warning: If using this component as an external component, you need to include both `ht16k33_alpha` **and** `ht16k33_base` components.
 ```yaml
 external_components:
-  source: github://ssieb/custom_components/
+  source: github://Alca7raz/custom_components/
   components: [ ht16k33_base, ht16k33_alpha ]
 ```
 
