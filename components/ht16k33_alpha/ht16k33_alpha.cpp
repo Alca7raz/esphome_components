@@ -29,7 +29,7 @@ void HT16K33AlphaDisplay::display_() {
   pos = 0;
   for (auto *display : this->displays_) {
     display->write_bytes(DISPLAY_COMMAND_SET_DDRAM_ADDR, data + pos, this->size_ * 2);
-    offset += 8;
+    pos += 8;
   }
 }
 
