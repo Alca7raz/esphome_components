@@ -79,7 +79,7 @@ float HT16K33BaseDisplay::get_brightness() {
   return this->brightness_ / 16.0;
 }
 
-uint16_t HT16K33AlphaDisplay::swapBits(uint16_t n, uint p1, uint p2) {
+uint16_t HT16K33BaseDisplay::swapBits(uint16_t n, uint p1, uint p2) {
     // Extract the bit at position p1
     unsigned int bit1 = (n >> p1) & 1;
 
