@@ -16,6 +16,7 @@ CONF_SCROLL_DWELL = "scroll_dwell"
 CONF_SCROLL_DELAY = "scroll_delay"
 CONF_SECONDARY_DISPLAYS = "secondary_displays"
 CONF_SWAP_BITS = "swap_bits"
+CONF_SIZE = "size"
 
 CONFIG_SECONDARY = cv.Schema({
     cv.GenerateID(): cv.declare_id(i2c.I2CDevice)
@@ -47,4 +48,6 @@ async def base_to_code(var, config):
         cg.add(var.set_scroll_speed(config[CONF_SCROLL_SPEED]))
         cg.add(var.set_scroll_dwell(config[CONF_SCROLL_DWELL]))
         cg.add(var.set_scroll_delay(int(config[CONF_SCROLL_DELAY] * config[CONF_SCROLL_SPEED].total_milliseconds)))
+    
+    cg.add(var.set_swap_bits(config[CONF_SWAP_BITS]))
 
