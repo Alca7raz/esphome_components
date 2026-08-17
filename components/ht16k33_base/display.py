@@ -16,7 +16,6 @@ CONF_SCROLL_DWELL = "scroll_dwell"
 CONF_SCROLL_DELAY = "scroll_delay"
 CONF_SECONDARY_DISPLAYS = "secondary_displays"
 CONF_SWAP_BITS = "swap_bits"
-CONF_SIZE = "size"
 
 CONFIG_SECONDARY = cv.Schema({
     cv.GenerateID(): cv.declare_id(i2c.I2CDevice)
