@@ -10,17 +10,21 @@ from ..ht16k33_base.display import (
 import esphome-config_validation as cv
 
 AUTO_LOAD = ['ht16k33_base']
+CONF_SIZE = "size"
 
 HT16K33AlphaDisplay = ht16k33_ns.class_("HT16K33AlphaDisplay", HT16K33BaseDisplay)
 
 CONFIG_SCHEMA = CONFIG_SCHEMA_BASE.extend(
-    cv.Schema({cv.GenerateID(): cv.declare_id(HT16K33AlphaDisplay)})
+    cv.Schema({cv.GenerateID(): cv.declare_id(HT16K33AlphaDisplay)}),
+    cv.Optional(CONF_SIZE, default=4): cv.int_range(min=1, max=8)
 )
 
 async def to_code(config):
     instance_var = HT16K33AlphaDisplay.new()
     var = cg.Pvariable(config[CONF_ID], instance_var)
     await base_to_code(var, config)
+    
+    cg.add(var.set_size(config[CONF_SIZE]))
 
     if CONF_SECONDARY_DISPLAYS in config:
         for conf in config[CONF_SECONDARY_DISPLAYS]:
