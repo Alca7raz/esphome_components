@@ -52,4 +52,5 @@ async def base_to_code(var, config):
         cg.add(var.set_scroll_delay(int(config[CONF_SCROLL_DELAY] * config[CONF_SCROLL_SPEED].total_milliseconds)))
     
     cg.add(var.set_swap_bits(config[CONF_SWAP_BITS]))
+    cg.add(var.set_size(config[CONF_SIZE]))
 
