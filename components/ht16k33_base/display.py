@@ -15,7 +15,7 @@ CONF_SCROLL_SPEED = "scroll_speed"
 CONF_SCROLL_DWELL = "scroll_dwell"
 CONF_SCROLL_DELAY = "scroll_delay"
 CONF_SECONDARY_DISPLAYS = "secondary_displays"
-
+CONF_SWAP_BITS = "swap_bits"
 
 CONFIG_SECONDARY = cv.Schema({
     cv.GenerateID(): cv.declare_id(i2c.I2CDevice)
@@ -25,6 +25,7 @@ CONFIG_SCHEMA_BASE = display.BASIC_DISPLAY_SCHEMA.extend({
     cv.GenerateID(): cv.declare_id(HT16K33BaseDisplay),
     cv.Optional(CONF_CONTINUOUS, default=False): cv.boolean,
     cv.Optional(CONF_SCROLL, default=False): cv.boolean,
+    cv.Optional(CONF_SWAP_BITS, default=False): cv.boolean,
     cv.Optional(CONF_SCROLL_SPEED, default='250ms'): cv.positive_time_period_milliseconds,
     cv.Optional(CONF_SCROLL_DWELL, default='2s'): cv.positive_time_period_milliseconds,
     cv.Optional(CONF_SCROLL_DELAY, default='3'): cv.float_range(min=1),
