@@ -15,8 +15,10 @@ CONF_SIZE = "size"
 HT16K33AlphaDisplay = ht16k33_ns.class_("HT16K33AlphaDisplay", HT16K33BaseDisplay)
 
 CONFIG_SCHEMA = CONFIG_SCHEMA_BASE.extend(
-    cv.Schema({cv.GenerateID(): cv.declare_id(HT16K33AlphaDisplay)}),
-    cv.Optional(CONF_SIZE, default=4): cv.int_range(min=1, max=8)
+    cv.Schema({
+        cv.GenerateID(): cv.declare_id(HT16K33AlphaDisplay),
+        cv.Optional(CONF_SIZE, default=4): cv.int_range(min=1, max=8)
+    }),
 )
 
 async def to_code(config):
