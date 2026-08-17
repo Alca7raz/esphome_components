@@ -16,6 +16,8 @@ CONF_SCROLL_DWELL = "scroll_dwell"
 CONF_SCROLL_DELAY = "scroll_delay"
 CONF_SECONDARY_DISPLAYS = "secondary_displays"
 CONF_SWAP_BITS = "swap_bits"
+CONF_SIZE = "size"
+
 
 CONFIG_SECONDARY = cv.Schema({
     cv.GenerateID(): cv.declare_id(i2c.I2CDevice)
@@ -30,6 +32,7 @@ CONFIG_SCHEMA_BASE = display.BASIC_DISPLAY_SCHEMA.extend({
     cv.Optional(CONF_SCROLL_DWELL, default='2s'): cv.positive_time_period_milliseconds,
     cv.Optional(CONF_SCROLL_DELAY, default='3'): cv.float_range(min=1),
     cv.Optional(CONF_SECONDARY_DISPLAYS): cv.ensure_list(CONFIG_SECONDARY),
+    cv.Optional(CONF_SIZE, default=4): cv.int_range(min=1, max=8)
 }).extend(cv.polling_component_schema('1s')).extend(i2c.i2c_device_schema(0x70))
 
 async def base_to_code(var, config):
