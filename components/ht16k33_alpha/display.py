@@ -21,8 +21,6 @@ async def to_code(config):
     instance_var = HT16K33AlphaDisplay.new()
     var = cg.Pvariable(config[CONF_ID], instance_var)
     await base_to_code(var, config)
-    
-    cg.add(var.set_size(config[CONF_SIZE]))
 
     if CONF_SECONDARY_DISPLAYS in config:
         for conf in config[CONF_SECONDARY_DISPLAYS]:
